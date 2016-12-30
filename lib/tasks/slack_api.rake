@@ -15,34 +15,60 @@ end
 client.on :message do |data|
   case data['text']
   when '出社', 'syussya' then
-    # users.id 参照
-    # att_mas.id, user_id, start_time 記録
+      user_name = data['user']
+      start_time = Time.now
+      RakeTasks::SlackApis.record_start_working_time(user_name, start_time)
+
     client.message channel: data['channel'],
     text: "おはよう！ attendance_managements.start_time に出社記録しました。\n
            今日のタスク一覧は？"
-
+=begin
   when 'タスク', 'tasks' then
     client.message channel: data['channel'],
-    text: "タスクと見積もり時間(h)を入力してください(間を:で挟んでください)"
+    #text: "タスクと見積もり時間(h)を入力してください(間を:で挟んでください)"
+    text: "task: から初めてタスクを入力してください"
+
+    user_name = data['user']
+    task_name_estimate_hours = data['text']
+    start_time = Time.now
+
+    RakeTasks::SlackApis.start_task(user_name, task_name_estimate_hours, start_time)
     # inputを取得して, text.id, att_man_id, name, start_time, estimate_end_time 記録
     # "終了予定時刻は#{tasks.estimate_end_time}です。頑張ろう!」"
+  when 'task:'
+    input
+    text: "hour: から初めて見積もり時間を入力してください"
 
+  when 'hour:'
+    tasks.nil? == true error tasks: とタイプしてください
+    input
+=end
   when '終わった', 'finished' then
-    # tasks.actual_end_time, finished_flag記録
-    # 実査にかかった時間, 見積もり時間を計算
+    RakeTasks::SlackApis.finish_task(data['user'], Time.now)
+    task_manage_hours = RakeTasks::SlackApis.task_manage_hours
+
     client.message channel: data['channel'],
-    text: "お疲れ様!"
-    # "見積もり時間はxxxでした。\n実際にかかった時間はxxxです。\n"
-    # サインさんからのありがたーいメッセージ
-  when '日報', 'nippou' then
-    # atte_mag.start_time, tasks.where(attd_mag_idが同じもの).name, estimate_end_time, actual_end_timeを呼び出す
+    text: "お疲れ様！\n
+           見積もり時間: #{task_manage_hours[0]}\n
+           実際にかかった時間: #{task_manage_hours[1]}"
+    # 社員さんからのありがたーいメッセージ
+
+  when '日報', 'dailyreport' then
+    start_time  = RakeTasks::SlackApis.attendance_management_start_time
+    todays_tasks = RakeTasks::SlackApis.todays_tasks
+
     client.message channel: data['channel'],
-    text: "今日の働きの成果はxxxです"
+    text: "今日の働きの成果です。\n
+           業務開始時刻: #{start_time}\n
+           タスク一覧: #{todays_tasks}\n
+           "
 
   when 'お疲れ様', '乙' then
-    # atte_mag.end_time 記録
+    RakeTasks::SlackApis.record_end_working_time(Time.now)
+
     client.message channel: data['channel'],
     text: "今日はxxxからxxxまで働きました。お疲れ様です!"
+
   when '教えてmentor' then
     client.message channel: data['channel'],
     text: "mentorについての説明"
