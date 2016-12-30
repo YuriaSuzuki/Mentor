@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  start_time: 2016-12-30 17:22:45
+  end_time: 2016-12-30 17:22:45
+  rest_hour: 1
+  actual_work_hour: 1
+
+two:
+  user_id: 1
+  start_time: 2016-12-30 17:22:45
+  end_time: 2016-12-30 17:22:45
+  rest_hour: 1
+  actual_work_hour: 1

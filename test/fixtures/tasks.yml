@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  attendance_manegement_id: 1
+  name: MyString
+  start_time: 2016-12-30 17:26:42
+  extimate_end_time: 2016-12-30 17:26:42
+  actual_end_time: 2016-12-30 17:26:42
+  finished_flag: false
+
+two:
+  attendance_manegement_id: 1
+  name: MyString
+  start_time: 2016-12-30 17:26:42
+  extimate_end_time: 2016-12-30 17:26:42
+  actual_end_time: 2016-12-30 17:26:42
+  finished_flag: false
